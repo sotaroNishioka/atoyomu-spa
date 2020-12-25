@@ -5,8 +5,8 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import firebase from '../../config/firebase';
-import firestore from '../../config/firestore';
+import firebase from '../../firebase/firebase';
+import firestore from '../../firebase/firestore';
 
 const useStyles = makeStyles((theme) => ({
   container: {

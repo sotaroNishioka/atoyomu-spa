@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import firebase from './config/firebase';
+import firebase from './firebase/firebase';
 import LoginPage from './page/login/loginContainer';
 import List from './page/list/listContainer';
 
