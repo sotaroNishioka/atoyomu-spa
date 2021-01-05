@@ -1,58 +1,80 @@
 import React from 'react';
 import '../../App.css';
-import SearchIcon from '@material-ui/icons/Search';
-import { AppBar, Toolbar, Button, InputBase } from '@material-ui/core';
+import { AppBar, Toolbar, Button, InputBase, Grid } from '@material-ui/core';
 import listStyles from './listStyle';
-import type { ListStyles } from './listStyle';
 import useList from './useList';
-import type { UseList } from './useList';
 import PreviewCard from '../../component/previewCard/previewCard';
 
-type PageProps = UseList & ListStyles;
-
-const Page: React.FC<PageProps> = (props: PageProps) => {
-  const { classes, func, state } = props;
+const List: React.FC = () => {
+  const { state, func } = useList();
+  const classes = listStyles();
   return (
     <div className="App">
       <AppBar position="static">
         <Toolbar>
           <div className={classes.searchArea}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="URLを入力"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              onChange={(event) => {
+                func.onInputURL(event.target.value);
+              }}
             />
           </div>
           <div className={classes.buttonArea}>
             <Button
               className={classes.button}
               color="inherit"
-              onClick={func.addList}
+              onClick={() => func.addList()}
             >
               後で読む
             </Button>
           </div>
         </Toolbar>
       </AppBar>
-      <div className={classes.cardArea}>
+      <Grid
+        className={classes.cardArea}
+        container
+        alignItems="center"
+        justify="center"
+      >
         {state.readingLists?.map((x) => {
-          return <PreviewCard overview={x} />;
+          return <PreviewCard key={x.id} overview={x} />;
         })}
-      </div>
+      </Grid>
+
+      <AppBar position="static">
+        <Toolbar>
+          <div className={classes.searchArea}>
+            <InputBase
+              placeholder="URLを入力"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={(event) => {
+                func.onInputURL(event.target.value);
+              }}
+            />
+          </div>
+          <div className={classes.buttonArea}>
+            <Button
+              className={classes.button}
+              color="inherit"
+              onClick={() => func.addList()}
+            >
+              後で読む
+            </Button>
+          </div>
+        </Toolbar>
+      </AppBar>
     </div>
   );
-};
-
-const List = () => {
-  const { state, func } = useList();
-  const classes = listStyles();
-  return Page({ classes, state, func });
 };
 
 export default List;

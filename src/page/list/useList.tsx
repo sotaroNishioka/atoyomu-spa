@@ -1,29 +1,16 @@
 import { useEffect, useState } from 'react';
 import '../../App.css';
 import firebase from '../../firebase/firebase';
-import { getReadingList, addReadingList } from '../../domain/readingList';
+import { addReadingList, subscReadingList } from '../../domain/readingList';
 import type { ReadingList } from '../../domain/readingList';
 import { getPreview } from '../../api/api';
 
-export type UseList = {
-  state: {
-    readingLists: ReadingList[] | null;
-  };
-  func: {
-    logout: () => void;
-    foo: () => Promise<void>;
-    addList: () => Promise<void>;
-  };
-};
-
-const useList = (): UseList => {
+const useList = () => {
   const [readingLists, setReadingLists] = useState<ReadingList[] | null>(null);
+  const [InputUrl, setInputUrl] = useState<string>('');
 
   useEffect(() => {
-    (async () => {
-      const fetchedReadingLists = await getReadingList();
-      setReadingLists(fetchedReadingLists);
-    })();
+    subscReadingList(setReadingLists);
   }, []);
 
   const logout = () => {
@@ -35,18 +22,27 @@ const useList = (): UseList => {
   };
 
   const addList = async () => {
-    /* eslint-disable no-undef */
-    // @ts-ignore
-    chrome.tabs.getSelected(async (tab: { url: string }) => {
-      const { url } = tab;
-      const overview = await getPreview(url);
-      await addReadingList(overview);
-      const fetchedReadingList = await getReadingList();
-      setReadingLists(fetchedReadingList);
-    });
-    /* eslint-enable no-undef */
+    if (InputUrl === '') {
+      /* eslint-disable no-undef */
+      // @ts-ignore
+      chrome.tabs.getSelected(async (tab: { url: string }) => {
+        const { url } = tab;
+        const overview = await getPreview(url);
+        await addReadingList(overview);
+      });
+      /* eslint-enable no-undef */
+    }
+    const overview = await getPreview(InputUrl);
+    await addReadingList(overview);
   };
-  return { state: { readingLists }, func: { logout, foo, addList } };
+  const onInputURL = (val: string) => {
+    setInputUrl(val);
+  };
+
+  return {
+    state: { readingLists, InputUrl },
+    func: { logout, foo, addList, onInputURL },
+  };
 };
 
 export default useList;

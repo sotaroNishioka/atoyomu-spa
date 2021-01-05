@@ -5,20 +5,6 @@ import {
   fade,
 } from '@material-ui/core/styles';
 
-export type ListStyles = {
-  classes: Record<
-    | 'button'
-    | 'root'
-    | 'searchArea'
-    | 'buttonArea'
-    | 'searchIcon'
-    | 'inputRoot'
-    | 'cardArea'
-    | 'inputInput',
-    string
-  >;
-};
-
 const listStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -45,27 +31,18 @@ const listStyles = makeStyles((theme: Theme) =>
       },
       width: '100%',
     },
-    searchIcon: {
-      padding: theme.spacing(0, 2),
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
     inputRoot: {
       width: '100%',
       color: 'inherit',
     },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+      paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
       transition: theme.transitions.create('width'),
       width: '100%',
     },
     cardArea: {
-      justifyContent: 'center',
+      marginTop: '16px',
     },
   })
 );
