@@ -4,8 +4,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { IconButton } from '@material-ui/core';
 import firebase from 'firebase';
-import { SettingContext } from '../../page/App';
 import { unShowRead, showRead } from '../../domain/userSetting';
+import SettingContext from '../../context/settingContext';
 
 const SettingMenu = () => {
   const userSetting = useContext(SettingContext);
@@ -28,16 +28,16 @@ const SettingMenu = () => {
     if (user === null) {
       return;
     }
-    await unShowRead(user.uid);
     handleClose();
+    await unShowRead(user.uid);
   };
   const onClickShowRead = async () => {
     const user = firebase.auth().currentUser;
     if (user === null) {
       return;
     }
-    await showRead(user.uid);
     handleClose();
+    await showRead(user.uid);
   };
 
   return (

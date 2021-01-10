@@ -1,13 +1,11 @@
-import React, { useState, createContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import firebase from '../firebase/firebase';
 import LoginPage from './login/loginContainer';
 import List from './list/listContainer';
-import Loading from '../component/Loading/loading';
-
+import Loading from '../component/loading/loading';
 import { subscUserSetting } from '../domain/userSetting';
 import type { UserSetting } from '../domain/userSetting';
-
-export const SettingContext = createContext<UserSetting | undefined>(undefined);
+import SettingContext from '../context/settingContext';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -35,19 +33,21 @@ const App = () => {
     });
   }, []);
 
-  if (isLoading === true) {
-    return <Loading />;
-  }
+  const result = () => {
+    if (isLoading === true) {
+      return <Loading />;
+    }
+    if (loginUser === null) {
+      return <LoginPage />;
+    }
+    return (
+      <SettingContext.Provider value={userSetting}>
+        <List />
+      </SettingContext.Provider>
+    );
+  };
 
-  if (loginUser === null) {
-    return <LoginPage />;
-  }
-
-  return (
-    <SettingContext.Provider value={userSetting}>
-      <List />
-    </SettingContext.Provider>
-  );
+  return <div style={{ width: '750px', height: '800px' }}>{result()}</div>;
 };
 
 export default App;
