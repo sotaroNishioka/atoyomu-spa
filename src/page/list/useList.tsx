@@ -1,5 +1,4 @@
 import { useEffect, useState, useContext } from 'react';
-import '../../App.css';
 import firebase from '../../firebase/firebase';
 import {
   addReadingList,

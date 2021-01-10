@@ -1,3 +1,0 @@
-// const googleExport = () => {};
-
-export default {};

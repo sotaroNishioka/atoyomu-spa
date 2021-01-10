@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../App.css';
 import { AppBar, Toolbar, Button, InputBase, Grid } from '@material-ui/core';
 import listStyles from './listStyle';
 import useList from './useList';
