@@ -7,7 +7,7 @@ import {
 } from '../../domain/readingList';
 import type { ReadingList } from '../../domain/readingList';
 import { getPreview } from '../../api/preview';
-import { SettingContext } from '../../App';
+import { SettingContext } from '../App';
 
 const useList = () => {
   const [readingLists, setReadingLists] = useState<ReadingList[] | null>(null);
