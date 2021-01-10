@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import firebase from '../../firebase/firebase';
-import firestore from '../../firebase/firestore';
+import { createUser, getUser, updateUser } from '../../domain/userSetting';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,14 +21,12 @@ const googleLogin = async () => {
     alert('ログインに失敗しました');
     return;
   }
-  const docId = firestore.collection('users').doc().id;
 
-  firestore.collection('users').doc(docId).set({
-    docId: user.uid,
-    name: user.displayName,
-    email: user.email,
-    lastLoginedAt: firebase.firestore.FieldValue.serverTimestamp(),
-  });
+  const exsitUser = await getUser(user);
+  if (exsitUser === undefined) {
+    await createUser(user);
+  }
+  await updateUser(user.uid);
 };
 
 const LoginPage = () => {
@@ -37,6 +35,7 @@ const LoginPage = () => {
   return (
     <Container className={classes.container}>
       <Grid container spacing={3}>
+        <Grid />
         <Grid item xs={12}>
           <Button
             color="secondary"

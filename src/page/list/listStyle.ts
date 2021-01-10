@@ -42,7 +42,24 @@ const listStyles = makeStyles((theme: Theme) =>
       width: '100%',
     },
     cardArea: {
-      marginTop: '16px',
+      paddingTop: '72px',
+      paddingBottom: '60px',
+    },
+    footer: {
+      top: 'auto',
+      bottom: 0,
+    },
+    footerSearchArea: {
+      borderRadius: theme.shape.borderRadius,
+      backgroundColor: fade(theme.palette.common.white, 0.15),
+      '&:hover': {
+        backgroundColor: fade(theme.palette.common.white, 0.25),
+      },
+      width: '100%',
+    },
+    footerButtonArea: {
+      paddingLeft: theme.spacing(1),
+      width: 'auto',
     },
   })
 );

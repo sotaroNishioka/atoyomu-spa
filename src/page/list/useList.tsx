@@ -1,13 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import '../../App.css';
 import firebase from '../../firebase/firebase';
-import { addReadingList, subscReadingList } from '../../domain/readingList';
+import {
+  addReadingList,
+  subscReadingList,
+  searchReadingList,
+} from '../../domain/readingList';
 import type { ReadingList } from '../../domain/readingList';
-import { getPreview } from '../../api/api';
+import { getPreview } from '../../api/preview';
+import { SettingContext } from '../../App';
 
 const useList = () => {
   const [readingLists, setReadingLists] = useState<ReadingList[] | null>(null);
+  const [searchResult, setSearchResult] = useState<ReadingList[]>([]);
   const [InputUrl, setInputUrl] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [inputSearch, setInputSearch] = useState<string>('');
+
+  const userSetting = useContext(SettingContext);
 
   useEffect(() => {
     subscReadingList(setReadingLists);
@@ -17,8 +27,20 @@ const useList = () => {
     firebase.auth().signOut();
   };
 
-  const foo = async () => {
-    console.log(readingLists);
+  const onInputSearchKeyword = async (keyword: string) => {
+    setInputSearch(keyword);
+    const isShowRead =
+      userSetting?.showRead === undefined ? false : userSetting.showRead;
+    const result = await searchReadingList(keyword, isShowRead);
+    setSearchResult(result);
+  };
+
+  const modalOpen = () => {
+    if (isModalOpen === false) {
+      setIsModalOpen(true);
+      return;
+    }
+    setIsModalOpen(false);
   };
 
   const addList = async () => {
@@ -40,8 +62,8 @@ const useList = () => {
   };
 
   return {
-    state: { readingLists, InputUrl },
-    func: { logout, foo, addList, onInputURL },
+    state: { readingLists, InputUrl, isModalOpen, searchResult, inputSearch },
+    func: { logout, addList, onInputURL, modalOpen, onInputSearchKeyword },
   };
 };
 

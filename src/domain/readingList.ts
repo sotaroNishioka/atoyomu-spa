@@ -1,7 +1,9 @@
 import React from 'react';
 import firebase from '../firebase/firebase';
 import firestore from '../firebase/firestore';
-import type { ApiResponse } from '../api/api';
+import type { ApiResponse } from '../api/preview';
+import buildTokenMap from '../util/buildToken';
+import tokenize from '../util/tokenize';
 
 export type ReadingList = {
   id: string;
@@ -29,18 +31,19 @@ export const subscReadingList = (
         ...docData,
       } as ReadingList;
     });
-    console.log(data);
     setReadingLists(data);
   });
   return () => unsubscribe();
 };
 
 export const addReadingList = async (overview: ApiResponse) => {
+  const tokenMap = buildTokenMap(`${overview.title} ${overview.description}`);
   const ref = firestore.collection('readingLists');
   await ref.add({
     uid: firebase.auth().currentUser?.uid,
     status: 'UNREAD',
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    tokenMap,
     ...overview,
   });
 };
@@ -60,10 +63,35 @@ export const readReadingList = async (id: string) => {
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
 };
+
 export const unreadReadingList = async (id: string) => {
   const ref = firestore.collection('readingLists').doc(id);
   await ref.update({
     status: 'UNREAD',
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
+};
+
+export const searchReadingList = async (
+  keyword: string,
+  isShowRead: boolean
+) => {
+  const ref = firestore.collection('readingLists');
+  const statusSetting = isShowRead === true ? ['READ', 'UNREAD'] : ['UNREAD'];
+
+  let query = ref
+    .where('uid', '==', firebase.auth().currentUser?.uid)
+    .where('status', 'in', statusSetting);
+
+  const keywords = tokenize(keyword);
+  keywords.forEach((x) => {
+    query = query.where(`tokenMap.${x}`, '==', true);
+  });
+  const res = await query.get();
+
+  const data = res.docs.map((doc) => {
+    return doc.data() as ReadingList;
+  });
+
+  return data;
 };
