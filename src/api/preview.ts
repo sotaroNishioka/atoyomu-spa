@@ -7,7 +7,7 @@ export type ApiResponse = {
 
 export const getPreview = async (url: string) => {
   const response = await fetch(
-    `https://atoyomi-api.herokuapp.com/preview?url=${url}`,
+    `https://atoyomu-api.herokuapp.com/preview?url=${url}`,
     {
       method: 'POST',
     }

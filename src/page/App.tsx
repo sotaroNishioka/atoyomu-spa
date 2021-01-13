@@ -47,7 +47,7 @@ const App = () => {
     );
   };
 
-  return <div style={{ width: '750px', height: '800px' }}>{result()}</div>;
+  return <div style={{ width: '450px', height: '800px' }}>{result()}</div>;
 };
 
 export default App;

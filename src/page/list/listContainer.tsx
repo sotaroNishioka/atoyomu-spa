@@ -24,6 +24,9 @@ const List: React.FC = () => {
               onChange={(event) => {
                 func.onInputURL(event.target.value);
               }}
+              onKeyDown={(event) => {
+                func.onEnterInput(event);
+              }}
             />
           </div>
           <div className={classes.buttonArea}>
@@ -41,14 +44,14 @@ const List: React.FC = () => {
         {state.inputSearch === '' && (
           <Grid container alignItems="center" justify="center">
             {state.readingLists?.map((x) => {
-              return <PreviewCard key={x.id} overview={x} />;
+              return <PreviewCard key={`${x.id}-preview`} overview={x} />;
             })}
           </Grid>
         )}
         {state.inputSearch !== '' && (
           <Grid container alignItems="center" justify="center">
             {state.searchResult.map((x) => {
-              return <SearchPreviewCard key={x.id} overview={x} />;
+              return <SearchPreviewCard key={`${x.id}-search`} overview={x} />;
             })}
           </Grid>
         )}

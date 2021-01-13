@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import firebase from '../../firebase/firebase';
 import {
   addReadingList,
@@ -51,6 +51,7 @@ const useList = () => {
         const overview = await getPreview(url);
         await addReadingList(overview);
       });
+      return;
       /* eslint-enable no-undef */
     }
     const overview = await getPreview(InputUrl);
@@ -60,9 +61,24 @@ const useList = () => {
     setInputUrl(val);
   };
 
+  const onEnterInput = async (
+    event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (event.key === 'Enter') {
+      await addList();
+    }
+  };
+
   return {
     state: { readingLists, InputUrl, isModalOpen, searchResult, inputSearch },
-    func: { logout, addList, onInputURL, modalOpen, onInputSearchKeyword },
+    func: {
+      logout,
+      addList,
+      onInputURL,
+      modalOpen,
+      onInputSearchKeyword,
+      onEnterInput,
+    },
   };
 };
 

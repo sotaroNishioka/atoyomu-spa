@@ -1,13 +1,13 @@
 import firebase from 'firebase';
 
 const config = {
-  apiKey: 'AIzaSyB4KgzDRMIT-iNrNdlXgui55oaqi7EE3Ys',
-  authDomain: 'atoyomi-app.firebaseapp.com',
-  projectId: 'atoyomi-app',
-  storageBucket: 'atoyomi-app.appspot.com',
-  messagingSenderId: '409653707954',
-  appId: '1:409653707954:web:82cb2947f86158664a75ab',
-  measurementId: 'G-PPXKJC9YGB',
+  apiKey: 'AIzaSyAXJia-EKy3_xpbJ6acJ6UZTzsAJBwCmyE',
+  authDomain: 'atoyomu-app.firebaseapp.com',
+  projectId: 'atoyomu-app',
+  storageBucket: 'atoyomu-app.appspot.com',
+  messagingSenderId: '887671398526',
+  appId: '1:887671398526:web:537eb58f336ef30cc0782f',
+  measurementId: 'G-GN6FWFMH8H',
 };
 
 firebase.initializeApp(config);
