@@ -57,6 +57,7 @@ const useList = () => {
     const overview = await getPreview(InputUrl);
     await addReadingList(overview);
   };
+
   const onInputURL = (val: string) => {
     setInputUrl(val);
   };
@@ -65,6 +66,7 @@ const useList = () => {
     event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     if (event.key === 'Enter') {
+      setInputUrl('');
       await addList();
     }
   };

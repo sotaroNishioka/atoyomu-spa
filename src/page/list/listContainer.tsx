@@ -21,6 +21,7 @@ const List: React.FC = () => {
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              value={state.InputUrl}
               onChange={(event) => {
                 func.onInputURL(event.target.value);
               }}

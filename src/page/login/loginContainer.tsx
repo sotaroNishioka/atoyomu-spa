@@ -17,7 +17,7 @@ const LoginPage = () => {
           <DoneOutlineIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          あとよむ！
+          あとよむ!!
         </Typography>
         <Button
           type="submit"
