@@ -1,13 +1,12 @@
 {
   "manifest_version": 2,
   "name": "あとよむ!!",
-  "version": "1",
+  "version": "0.0.1",
   "browser_action": {
     "default_icon": "logo.png",
     "default_popup": "index.html"
   },
   "permissions": [
-    "tabs",
-    "*://atoyomu-api.herokuapp.com/preview"
+    "activeTab"
   ],
   "content_security_policy": "script-src 'self' https://apis.google.com; object-src 'self'"}
