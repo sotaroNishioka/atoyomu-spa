@@ -7,6 +7,7 @@ const useLogin = () => {
     const { user } = await firebase.auth().signInWithPopup(provider);
 
     if (user === null) {
+      // eslint-disable-next-line no-alert
       alert('ログインに失敗しました');
       return;
     }
