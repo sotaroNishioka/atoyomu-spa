@@ -71,6 +71,27 @@ const useList = () => {
     }
   };
 
+  const columnCount = (lists: ReadingList[] | null) => {
+    if (lists === null) {
+      return {};
+    }
+    if (window.innerWidth > 960) {
+      if (lists.length === 1) {
+        return { columnCount: 1 };
+      }
+      if (lists.length === 2) {
+        return { columnCount: 2 };
+      }
+      if (lists.length === 3) {
+        return { columnCount: 3 };
+      }
+      if (lists.length === 4) {
+        return { columnCount: 2 };
+      }
+    }
+    return {};
+  };
+
   return {
     state: { readingLists, InputUrl, isModalOpen, searchResult, inputSearch },
     func: {
@@ -80,6 +101,7 @@ const useList = () => {
       modalOpen,
       onInputSearchKeyword,
       onEnterInput,
+      columnCount,
     },
   };
 };

@@ -1,10 +1,10 @@
 import React from 'react';
-import { AppBar, Toolbar, Button, InputBase, Grid } from '@material-ui/core';
+import { AppBar, Toolbar, Button, InputBase } from '@material-ui/core';
 import listStyles from './listStyle';
 import useList from './useList';
 import PreviewCard from '../../component/previewCard/previewCard';
-import SearchPreviewCard from '../../component/searchPreviewCard/searchPreviewCard';
 import SettingMenuButton from '../../component/settingMenu/settingMenu';
+import SearchPreviewCard from '../../component/searchPreviewCard/searchPreviewCard';
 
 const List: React.FC = () => {
   const { state, func } = useList();
@@ -41,22 +41,26 @@ const List: React.FC = () => {
           </div>
         </Toolbar>
       </AppBar>
-      <div className={classes.cardArea}>
-        {state.inputSearch === '' && (
-          <Grid container alignItems="center" justify="center">
-            {state.readingLists?.map((x) => {
-              return <PreviewCard key={`${x.id}-preview`} overview={x} />;
-            })}
-          </Grid>
-        )}
-        {state.inputSearch !== '' && (
-          <Grid container alignItems="center" justify="center">
-            {state.searchResult.map((x) => {
-              return <SearchPreviewCard key={`${x.id}-search`} overview={x} />;
-            })}
-          </Grid>
-        )}
-      </div>
+      {state.inputSearch === '' && (
+        <div
+          className={classes.cardArea}
+          style={func.columnCount(state.readingLists)}
+        >
+          {state.readingLists?.map((x) => (
+            <PreviewCard key={`${x.id}-preview`} overview={x} />
+          ))}
+        </div>
+      )}
+      {state.inputSearch !== '' && (
+        <div
+          className={classes.cardArea}
+          style={func.columnCount(state.searchResult)}
+        >
+          {state.searchResult?.map((x) => (
+            <SearchPreviewCard key={`${x.id}-search`} overview={x} />
+          ))}
+        </div>
+      )}
       <AppBar className={classes.footer} position="fixed">
         <Toolbar>
           <div className={classes.footerSearchArea}>

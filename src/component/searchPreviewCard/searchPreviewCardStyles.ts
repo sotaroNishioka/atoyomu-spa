@@ -1,10 +1,18 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 
-const previewCardStyles = makeStyles(() =>
+const previewCardStyles = makeStyles((theme) =>
   createStyles({
+    root: {
+      paddingBottom: '2px',
+      marginBottom: theme.spacing(2),
+    },
     card: {
-      marginBottom: '16px',
-      width: '95%',
+      [theme.breakpoints.up('xs')]: {
+        width: '100%',
+      },
+      width: theme.spacing(35),
+      breakInside: 'avoid',
+      pageBreakInside: 'avoid',
       display: 'flex',
     },
     disabledCard: {

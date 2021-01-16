@@ -42,8 +42,22 @@ const listStyles = makeStyles((theme: Theme) =>
       width: '100%',
     },
     cardArea: {
-      paddingTop: '72px',
-      paddingBottom: '60px',
+      [theme.breakpoints.down('xs')]: {
+        width: '90%',
+      },
+      [theme.breakpoints.up('md')]: {
+        width: '868px',
+      },
+      [theme.breakpoints.up('lg')]: {
+        width: '1162px',
+      },
+      [theme.breakpoints.up('xl')]: {
+        width: '1750px',
+      },
+      margin: 'auto',
+      columnWidth: theme.spacing(35),
+      paddingTop: theme.spacing(10),
+      paddingBottom: theme.spacing(10),
     },
     footer: {
       top: 'auto',

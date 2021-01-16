@@ -1,39 +1,23 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 
-const previewCardStyles = makeStyles(() =>
+const previewCardStyles = makeStyles((theme) =>
   createStyles({
-    card: {
-      marginBottom: '16px',
-      width: '95%',
-      display: 'flex',
+    root: {
+      paddingBottom: '2px',
+      marginBottom: theme.spacing(2),
     },
-    mediaArea: {
-      width: '35%',
-      height: 'auto',
-      cursor: 'pointer',
-      display: 'flex',
+    card: {
+      [theme.breakpoints.up('xs')]: {
+        width: '100%',
+      },
+      width: theme.spacing(35),
+      marginBottom: theme.spacing(2),
+      breakInside: 'avoid',
+      pageBreakInside: 'avoid',
     },
     media: {
-      width: '100%',
+      height: 140,
     },
-    contentArea: {
-      width: '65%',
-    },
-    content: {
-      padding: '8px 8px 0 16px',
-      overflow: 'hidden',
-    },
-    title: {
-      height: '60px',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-    },
-    description: {
-      height: '80px',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-    },
-    buttonArea: {},
     deleteButton: {
       width: '50%',
     },

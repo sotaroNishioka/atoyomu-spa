@@ -1,60 +1,55 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { Button, CardActions, Link } from '@material-ui/core';
+import { Link } from '@material-ui/core';
 import { DoneOutlined, Delete } from '@material-ui/icons';
+import {
+  ReadingList,
+  deleteReadingList,
+  readReadingList,
+} from '../../domain/readingList';
 import previewCardStyles from './previewCardStyles';
-import type { ReadingList } from '../../domain/readingList';
-import { deleteReadingList, readReadingList } from '../../domain/readingList';
 
 const PreviewCard = (props: { overview: ReadingList }) => {
+  const classes = previewCardStyles();
   const { overview } = props;
-  const classes = previewCardStyles(overview);
   return (
-    <Card className={classes.card}>
-      <Link
-        className={classes.mediaArea}
-        underline="none"
-        href={overview.url}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <CardMedia
-          component="img"
-          image={overview.images && overview.images[0]}
-          height={overview.description === '' ? '123px' : '203px'}
-          onClick={() => {
-            window.open(overview.url);
-          }}
-        />
-      </Link>
-      <div className={classes.contentArea}>
+    <div className={classes.root}>
+      <Card className={classes.card}>
         <Link
           underline="none"
           href={overview.url}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <div className={classes.content}>
-            <Typography className={classes.title} gutterBottom variant="h6">
-              {overview.title}
-            </Typography>
-            {(() => {
-              if (overview.description !== '') {
-                return (
-                  <Typography
-                    className={classes.description}
-                    variant="body2"
-                    color="textSecondary"
-                  >
-                    {overview.description}
-                  </Typography>
-                );
-              }
-              return '';
-            })()}
-          </div>
+          <CardActionArea>
+            <CardMedia
+              className={classes.media}
+              image={overview.images && overview.images[0]}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {overview.title}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {(() => {
+                  if (overview.description !== '') {
+                    return (
+                      <Typography variant="body2" color="textSecondary">
+                        {overview.description}
+                      </Typography>
+                    );
+                  }
+                  return '';
+                })()}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
         </Link>
         <CardActions>
           <Button
@@ -76,8 +71,8 @@ const PreviewCard = (props: { overview: ReadingList }) => {
             <DoneOutlined color="action" />
           </Button>
         </CardActions>
-      </div>
-    </Card>
+      </Card>
+    </div>
   );
 };
 
