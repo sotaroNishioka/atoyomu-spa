@@ -19,7 +19,7 @@ export type ReadingList = {
 export const subscReadingList = (
   setReadingLists: React.Dispatch<React.SetStateAction<ReadingList[] | null>>
 ) => {
-  const ref = firestore.collection('readingLists').orderBy('createdAt', 'asc');
+  const ref = firestore.collection('readingLists').orderBy('createdAt', 'desc');
   const query = ref
     .where('uid', '==', firebase.auth().currentUser?.uid)
     .where('status', '==', 'UNREAD');
