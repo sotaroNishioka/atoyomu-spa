@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import firebase from '../firebase/firebase';
-// import Landing from './landing/landing';
+import Landing from './landing/landing';
 import List from './list/listContainer';
 import Loading from '../component/loading/loading';
 import { subscUserSetting } from '../domain/userSetting';
 import type { UserSetting } from '../domain/userSetting';
 import SettingContext from '../context/settingContext';
-import LoginPage from './login/loginContainer';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -39,7 +38,7 @@ const App = () => {
       return <Loading />;
     }
     if (loginUser === null) {
-      return <LoginPage />;
+      return <Landing />;
     }
     return (
       <SettingContext.Provider value={userSetting}>
