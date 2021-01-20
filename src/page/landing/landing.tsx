@@ -177,10 +177,10 @@ const About = () => {
         background: `url(${abountImage}) center center no-repeat`,
         backgroundSize: 'cover',
         [theme.breakpoints.down('xs')]: {
-          height: '361px',
+          height: '330px',
         },
         [theme.breakpoints.up('xs')]: {
-          height: '448px',
+          height: '460px',
         },
       },
       descriptionArea: {
