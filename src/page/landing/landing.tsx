@@ -59,20 +59,25 @@ const Header = () => {
       root: {
         background: `url(${bgImage}) center center no-repeat`,
         backgroundSize: 'cover',
-        width: '100%',
-        color: '#595959',
-      },
-      content: {
-        paddingTop: '350px',
-        paddingBottom: '250px',
+        display: 'flex',
+        [theme.breakpoints.up('xs')]: {
+          height: '700px',
+          marginTop: theme.spacing(8),
+        },
+        [theme.breakpoints.down('xs')]: {
+          height: '380px',
+          marginTop: theme.spacing(6),
+        },
       },
       title: {
         marginBottom: theme.spacing(4),
         fontWeight: 'bold',
+        [theme.breakpoints.down('xs')]: {
+          marginTop: theme.spacing(6),
+        },
       },
       description: {
         marginBottom: theme.spacing(4),
-        fontWeight: 'normal',
       },
       loginButton: {
         borderRadius: '21px',
@@ -82,25 +87,27 @@ const Header = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Box textAlign="center" className={classes.content}>
-        <Typography color="primary" className={classes.title} variant="h2">
-          ATOYOMU
-        </Typography>
-        <Typography className={classes.description} variant="subtitle1">
-          あとで読むをよりシンプルに管理するアプリケーションです。
-          <br />
-          ブラウザ、スマートフォンからご利用いただけます。
-        </Typography>
-        <Button
-          className={classes.loginButton}
-          color="primary"
-          variant="outlined"
-          onClick={func.googleLogin}
-          size="large"
-        >
-          使ってみる
-        </Button>
-      </Box>
+      <Grid container alignItems="center" justify="center">
+        <Box textAlign="center">
+          <Typography color="primary" className={classes.title} variant="h1">
+            ATOYOMU
+          </Typography>
+          <Typography className={classes.description} variant="subtitle2">
+            あとで読むをシンプルに管理するアプリです。
+            <br />
+            ブラウザ、スマートフォンからご利用いただけます。
+          </Typography>
+          <Button
+            className={classes.loginButton}
+            color="primary"
+            variant="outlined"
+            onClick={func.googleLogin}
+            size="large"
+          >
+            使ってみる
+          </Button>
+        </Box>
+      </Grid>
     </div>
   );
 };
@@ -143,40 +150,53 @@ const About = () => {
   const useStyles = makeStyles((theme) =>
     createStyles({
       root: {
-        backgroundColor: '#f6f6f6',
-        padding: theme.spacing(8, 0, 8, 0),
-        [theme.breakpoints.up('sm')]: {
-          padding: theme.spacing(8),
+        maxWidth: '960px',
+        margin: 'auto',
+      },
+      container: {
+        width: '100%',
+        [theme.breakpoints.up('xs')]: {
+          padding: theme.spacing(8, 2, 8, 2),
           display: 'flex',
+        },
+        [theme.breakpoints.down('xs')]: {
+          padding: theme.spacing(4, 2, 4, 2),
+          display: 'block',
         },
       },
       imageArea: {
-        [theme.breakpoints.down('sm')]: {
-          padding: theme.spacing(0, 2, 0, 2),
-          marginBottom: theme.spacing(6),
+        [theme.breakpoints.up('xs')]: {
+          width: '50%',
         },
-        [theme.breakpoints.up('sm')]: {
-          width: '60%',
+        [theme.breakpoints.down('xs')]: {
+          marginBottom: theme.spacing(6),
+          width: '100%',
         },
       },
       image: {
         background: `url(${abountImage}) center center no-repeat`,
         backgroundSize: 'cover',
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('xs')]: {
           height: '361px',
         },
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('xs')]: {
           height: '448px',
         },
       },
       descriptionArea: {
-        [theme.breakpoints.down('sm')]: {
-          paddingLeft: theme.spacing(2),
-          paddingRight: theme.spacing(2),
-          marginBottom: theme.spacing(4),
+        [theme.breakpoints.up('xs')]: {
+          width: '50%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          wordBreak: 'break-all',
+          padding: theme.spacing(6),
         },
-        [theme.breakpoints.up('sm')]: {
-          width: '40%',
+        [theme.breakpoints.down('xs')]: {
+          width: '100%',
+          display: 'block',
+          padding: theme.spacing(1),
         },
       },
       descriptionTitle: {
@@ -198,42 +218,32 @@ const About = () => {
   const classes = useStyles();
   return (
     <>
-      <div className={classes.root} color="#595959">
-        <div className={classes.imageArea}>
-          <Paper elevation={4} className={classes.image} />
-        </div>
-
-        <Grid
-          className={classes.descriptionArea}
-          container
-          alignItems="center"
-          justify="center"
-        >
-          <div>
-            <Typography
-              className={classes.descriptionTitle}
-              color="primary"
-              variant="h5"
-            >
-              「あとで読む」をもっと簡単に
-            </Typography>
-            <div className={classes.descriptionBorder} />
-            <Typography
-              className={classes.descriptionDetail}
-              color="primary"
-              variant="subtitle1"
-            >
-              dummydummydummydummydummydummy
-              <br />
-              dummydummydummydummydummydummy
-              <br />
-              dummydummydummydummydummydummy
-              <br />
-              dummydummydummydummydummydummy
-              <br />
-            </Typography>
+      <div className={classes.root}>
+        <div className={classes.container}>
+          <div className={classes.imageArea}>
+            <Paper elevation={4} className={classes.image} />
           </div>
-        </Grid>
+          <div className={classes.descriptionArea}>
+            <Box>
+              <Typography
+                className={classes.descriptionTitle}
+                color="primary"
+                variant="h5"
+              >
+                「あとで読む」をシンプルに
+              </Typography>
+              <div className={classes.descriptionBorder} />
+              <Typography
+                className={classes.descriptionDetail}
+                color="primary"
+                variant="subtitle1"
+              >
+                dummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummydummy
+                <br />
+              </Typography>
+            </Box>
+          </div>
+        </div>
       </div>
     </>
   );
