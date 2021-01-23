@@ -9,7 +9,7 @@
     "rewrites": [
       {
         "source":"api/**",
-        "function":"helloWorld"
+        "function":"app"
       },
       {
         "source": "**",
