@@ -8,10 +8,6 @@ import * as express from 'express'
 
 const app = express()
 
-export const helloWorld = functions.https.onRequest((request, response) => {
-  functions.logger.info("Hello logs!", {structuredData: true});
-  response.send("Hello from Firebase!");
-});
 
 app.post('/preview', (req, res) => {
   
@@ -36,4 +32,9 @@ app.post('/preview', (req, res) => {
   // });
 });
 
-exports.app = functions.region('asia-northeast1').https.onRequest(app);
+exports.app = functions.region('asia-northeast1').https.onRequest(app)
+
+exports.helloWorld = functions.https.onRequest((request, response) => {
+  functions.logger.info("Hello logs!", {structuredData: true})
+  response.send("Hello from Firebase!")
+})
