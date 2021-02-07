@@ -1,40 +1,54 @@
 import * as functions from 'firebase-functions'
-import * as express from 'express'
-// import * as osmosis from 'osmosis'
-
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-
-const app = express()
+import * as osmosis from 'osmosis'
 
 
-app.post('/preview', (req, res) => {
-  
-  console.log(req.body);
-  res.send('herrlo preview')
+exports.preview = functions.https.onRequest(
+  (request, response) => {
+    console.log('request.methodrequest.methodrequest.methodrequest.method')
+    console.log(request.method)
+    if (request.method !== 'POST') {
+      response.status(404).send()
+      return
+    }
+    const {url}: {url: string|undefined} = request.body
+    if (url === undefined) {
+      response.status(403).send()
+      return
+    }
 
-  // osmosis
-  // .get('https://hugo-de-blog.com/node-install/')
-  // .find('head')
-  // .set({
-  //   site_name: "meta[property='og:site_name']@content",
-  //   url: "meta[property='og:url']@content",
-  //   title: "meta[property='og:title']@content",
-  //   type: "meta[property='og:type']@content",
-  //   description: "meta[property='og:description']@content",
-  //   image: "meta[property='og:image']@content"
-  // })
-  // .data(res => response = res)
-  // .error(err => response = `error:` + err)
-  // .done(() => {
-  //   res.send('/.*fly$/')
-  // });
+    osmosis
+    .get(url)
+    .find('head')
+    .set({
+      site_name: "meta[property='og:site_name']@content",
+      url: "meta[property='og:url']@content",
+      title: "meta[property='og:title']@content",
+      type: "meta[property='og:type']@content",
+      description: "meta[property='og:description']@content",
+      image: "meta[property='og:image']@content"
+    })
+    .data(({site_name,url,title,type,description,image}) => {
+      response.status(200).send({site_name,url,title,type,description,image})
+      return
+    })
+    .error(err => {
+      response.status(200).send()
+      return
+    })
+  }
+);
+
+exports.sample = functions.https.onRequest(
+  (request, response) => {
+    response.status(200).send('this is sample')
 });
 
-exports.app = functions.region('asia-northeast1').https.onRequest(app)
+exports.test = functions.https.onRequest(
+  (request, response) => {
+    response.status(200).send('this is test')
+});
 
-exports.helloWorld = functions.https.onRequest((request, response) => {
-  functions.logger.info("Hello logs!", {structuredData: true})
-  response.send("Hello from Firebase!")
-})
+exports.hello = functions.https.onRequest(
+  (request, response) => {
+    response.status(200).send('this is hello')
+});
