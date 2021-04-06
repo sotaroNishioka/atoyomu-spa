@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import isURL from 'validator/lib/isURL';
 import firebase from '../../firebase/firebase';
 import {
   addReadingList,
@@ -43,16 +44,9 @@ const useList = () => {
   };
 
   const addList = async () => {
-    if (InputUrl === '') {
-      /* eslint-disable no-undef */
-      // @ts-ignore
-      chrome.tabs.getSelected(async (tab: { url: string }) => {
-        const { url } = tab;
-        const overview = await getPreview(url);
-        await addReadingList(overview);
-      });
+    if (isURL(InputUrl, { require_protocol: true }) === false) {
+      alert('not valid url');
       return;
-      /* eslint-enable no-undef */
     }
     const overview = await getPreview(InputUrl);
     await addReadingList(overview);

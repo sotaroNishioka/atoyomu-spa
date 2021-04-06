@@ -8,13 +8,12 @@
     ],
     "rewrites": [
       {
-        "source":"api/**",
-        "function":"app"
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
+        "source": "/api/preview",
+        "function": "preview"
       }
     ]
+  },
+  "functions": {
+    "predeploy": "npm --prefix functions run build"
   }
 }
