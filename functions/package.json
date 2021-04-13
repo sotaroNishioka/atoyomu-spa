@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "firebase-admin": "^9.2.0",
     "firebase-functions": "^3.11.0",
+    "lodash": "^4.17.21",
     "osmosis": "^1.1.10"
   },
   "devDependencies": {

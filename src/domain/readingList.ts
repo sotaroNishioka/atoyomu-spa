@@ -1,17 +1,15 @@
 import React from 'react';
 import firebase from '../firebase/firebase';
 import firestore from '../firebase/firestore';
-import type { ApiResponse } from '../api/preview';
-import buildTokenMap from '../util/buildToken';
 import tokenize from '../util/tokenize';
 
 export type ReadingList = {
   id: string;
   uid: string;
+  url: string;
   description: string;
   images: string[];
   title: string;
-  url: string;
   createdAt: firebase.firestore.FieldValue;
   status: 'READ' | 'UNREAD' | 'DELETED';
 };
@@ -36,15 +34,13 @@ export const subscReadingList = (
   return () => unsubscribe();
 };
 
-export const addReadingList = async (overview: ApiResponse) => {
-  const tokenMap = buildTokenMap(`${overview.title} ${overview.description}`);
+export const addReadingList = async (url: string) => {
   const ref = firestore.collection('readingLists');
   await ref.add({
     uid: firebase.auth().currentUser?.uid,
     status: 'UNREAD',
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    tokenMap,
-    ...overview,
+    url,
   });
 };
 

@@ -7,7 +7,6 @@ import {
   searchReadingList,
 } from '../../domain/readingList';
 import type { ReadingList } from '../../domain/readingList';
-import { getPreview } from '../../api/preview';
 import SettingContext from '../../context/settingContext';
 
 const useList = () => {
@@ -48,8 +47,8 @@ const useList = () => {
       alert('not valid url');
       return;
     }
-    const overview = await getPreview(InputUrl);
-    await addReadingList(overview);
+    // const overview = await getPreview(InputUrl);
+    await addReadingList(InputUrl);
   };
 
   const onInputURL = (val: string) => {
