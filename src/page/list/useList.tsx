@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import isURL from 'validator/lib/isURL';
-import firebase from '../../firebase/firebase';
+import { firebaseAuth } from '../../firebase/firebase';
 import {
   addReadingList,
   subscReadingList,
@@ -23,7 +23,7 @@ const useList = () => {
   }, []);
 
   const logout = () => {
-    firebase.auth().signOut();
+    firebaseAuth.signOut();
   };
 
   const onInputSearchKeyword = async (keyword: string) => {

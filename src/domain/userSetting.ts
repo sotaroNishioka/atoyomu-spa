@@ -1,47 +1,54 @@
+import type { User } from 'firebase/auth';
+
+import {
+  addDoc,
+  collection,
+  doc,
+  FieldValue,
+  getDoc,
+  onSnapshot,
+  serverTimestamp,
+  updateDoc,
+} from 'firebase/firestore';
 import React from 'react';
-import firebase from '../firebase/firebase';
-import firestore from '../firebase/firestore';
+import { db } from '../firebase/firebase';
 
 export type UserSetting = {
   id: string;
   uid: string;
   showRead: boolean;
-  updatedAt: firebase.firestore.FieldValue;
-  createdAt: firebase.firestore.FieldValue;
+  updatedAt: FieldValue;
+  createdAt: FieldValue;
 };
 
-export const createUser = async (user: firebase.User) => {
-  await firestore.collection('users').doc(user.uid).set({
+export const createUser = async (user: User) => {
+  await addDoc(collection(db, 'users'), {
     uid: user.uid,
     name: user.displayName,
     email: user.email,
     showRead: false,
-    createAt: firebase.firestore.FieldValue.serverTimestamp(),
-    lastLoginedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    createAt: serverTimestamp(),
+    lastLoginedAt: serverTimestamp(),
   });
 };
 
 export const updateUser = async (uid: string) => {
-  await firestore.collection('users').doc(uid).update({
-    lastLoginedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  await updateDoc(doc(db, 'users', uid), {
+    lastLoginedAt: serverTimestamp(),
   });
 };
 
 export const showRead = async (uid: string) => {
-  await firestore.collection('users').doc(uid).update({
-    showRead: true,
-  });
+  await updateDoc(doc(db, 'users', uid), { showRead: true });
 };
 
 export const unShowRead = async (uid: string) => {
-  await firestore.collection('users').doc(uid).update({
-    showRead: false,
-  });
+  await updateDoc(doc(db, 'users', uid), { showRead: false });
 };
 
-export const getUser = async (user: firebase.User) => {
-  const ref = firestore.collection('users').doc(user.uid);
-  const res = await ref.get();
+export const getUser = async (user: User) => {
+  const usersCollection = collection(db, 'users');
+  const res = await getDoc(doc(usersCollection, user.uid));
   return res.data();
 };
 
@@ -49,10 +56,10 @@ export const subscUserSetting = (
   uid: string,
   setUserSetting: React.Dispatch<React.SetStateAction<UserSetting | undefined>>
 ) => {
-  const ref = firestore.collection('users').doc(uid);
-  const unsubscribe = ref.onSnapshot((snap) => {
+  const unsb = onSnapshot(doc(db, 'users', uid), (snap) => {
     const data = snap.data() as UserSetting;
     setUserSetting(data);
   });
-  return () => unsubscribe();
+
+  return () => unsb();
 };

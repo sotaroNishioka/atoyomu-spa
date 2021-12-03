@@ -3,7 +3,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { IconButton } from '@material-ui/core';
-import firebase from 'firebase';
+import { firebaseAuth } from '../../firebase/firebase';
 import { unShowRead, showRead } from '../../domain/userSetting';
 import SettingContext from '../../context/settingContext';
 
@@ -20,11 +20,11 @@ const SettingMenu = () => {
   };
 
   const onClickLogout = () => {
-    firebase.auth().signOut();
+    firebaseAuth.signOut();
   };
 
   const onClickUnShowRead = async () => {
-    const user = firebase.auth().currentUser;
+    const user = firebaseAuth.currentUser;
     if (user === null) {
       return;
     }
@@ -32,7 +32,7 @@ const SettingMenu = () => {
     await unShowRead(user.uid);
   };
   const onClickShowRead = async () => {
-    const user = firebase.auth().currentUser;
+    const user = firebaseAuth.currentUser;
     if (user === null) {
       return;
     }

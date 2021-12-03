@@ -1,6 +1,18 @@
+import {
+  collection,
+  FieldValue,
+  where,
+  query,
+  orderBy,
+  onSnapshot,
+  addDoc,
+  serverTimestamp,
+  doc,
+  updateDoc,
+  getDocs,
+} from 'firebase/firestore';
 import React from 'react';
-import firebase from '../firebase/firebase';
-import firestore from '../firebase/firestore';
+import { firebaseAuth, db } from '../firebase/firebase';
 import tokenize from '../util/tokenize';
 
 export type ReadingList = {
@@ -10,22 +22,25 @@ export type ReadingList = {
   description: string;
   images: string[];
   title: string;
-  createdAt: firebase.firestore.FieldValue;
+  createdAt: FieldValue;
   status: 'READ' | 'UNREAD' | 'DELETED';
 };
 
 export const subscReadingList = (
   setReadingLists: React.Dispatch<React.SetStateAction<ReadingList[] | null>>
 ) => {
-  const ref = firestore.collection('readingLists').orderBy('createdAt', 'desc');
-  const query = ref
-    .where('uid', '==', firebase.auth().currentUser?.uid)
-    .where('status', '==', 'UNREAD');
-  const unsubscribe = query.onSnapshot((snap) => {
-    const data = snap.docs.map((doc) => {
-      const docData = doc.data();
+  const q = query(
+    collection(db, 'readingLists'),
+    where('uid', '==', firebaseAuth.currentUser?.uid),
+    where('status', '==', 'UNREAD'),
+    orderBy('createdAt', 'desc')
+  );
+
+  const unsubscribe = onSnapshot(q, (snap) => {
+    const data = snap.docs.map((x) => {
+      const docData = x.data();
       return {
-        id: doc.id,
+        id: x.id,
         ...docData,
       } as ReadingList;
     });
@@ -35,36 +50,32 @@ export const subscReadingList = (
 };
 
 export const addReadingList = async (url: string) => {
-  const ref = firestore.collection('readingLists');
-  await ref.add({
-    uid: firebase.auth().currentUser?.uid,
+  await addDoc(collection(db, 'readingLists'), {
+    uid: firebaseAuth.currentUser?.uid,
     status: 'UNREAD',
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    createdAt: serverTimestamp(),
     url,
   });
 };
 
 export const deleteReadingList = async (id: string) => {
-  const ref = firestore.collection('readingLists').doc(id);
-  await ref.update({
+  await updateDoc(doc(db, 'readingLists', id), {
     status: 'DELETED',
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    updatedAt: serverTimestamp(),
   });
 };
 
 export const readReadingList = async (id: string) => {
-  const ref = firestore.collection('readingLists').doc(id);
-  await ref.update({
+  await updateDoc(doc(db, 'readingLists', id), {
     status: 'READ',
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    updatedAt: serverTimestamp(),
   });
 };
 
 export const unreadReadingList = async (id: string) => {
-  const ref = firestore.collection('readingLists').doc(id);
-  await ref.update({
+  await updateDoc(doc(db, 'readingLists', id), {
     status: 'UNREAD',
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    updatedAt: serverTimestamp(),
   });
 };
 
@@ -72,21 +83,22 @@ export const searchReadingList = async (
   keyword: string,
   isShowRead: boolean
 ) => {
-  const ref = firestore.collection('readingLists');
   const statusSetting = isShowRead === true ? ['READ', 'UNREAD'] : ['UNREAD'];
-
-  let query = ref
-    .where('uid', '==', firebase.auth().currentUser?.uid)
-    .where('status', 'in', statusSetting);
-
   const keywords = tokenize(keyword);
-  keywords.forEach((x) => {
-    query = query.where(`tokenMap.${x}`, '==', true);
+  const wheres = keywords.map((x) => {
+    return where(`tokenMap.${x}`, '==', true);
   });
-  const res = await query.get();
+  const q = query(
+    collection(db, 'readingLists'),
+    where('uid', '==', firebaseAuth.currentUser?.uid),
+    where('status', 'in', statusSetting),
+    ...wheres,
+    orderBy('createdAt', 'desc')
+  );
 
-  const data = res.docs.map((doc) => {
-    return doc.data() as ReadingList;
+  const res = await getDocs(q);
+  const data = res.docs.map((x) => {
+    return x.data() as ReadingList;
   });
 
   return data;
