@@ -1,11 +1,10 @@
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { createUser, getUser, updateUser } from '../../domain/userSetting';
-import { firebaseAuth } from '../../firebase/firebase';
+import firebase from '../../firebase/firebase';
 
 const useLogin = () => {
   const googleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    const { user } = await signInWithPopup(firebaseAuth, provider);
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const { user } = await firebase.auth().signInWithPopup(provider);
 
     if (user === null) {
       // eslint-disable-next-line no-alert

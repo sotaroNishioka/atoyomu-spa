@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { User } from '@firebase/auth';
-import { firebaseAuth } from '../firebase/firebase';
+import firebase from '../firebase/firebase';
 import Landing from './landing/landing';
 import List from './list/listContainer';
 import Loading from '../component/loading/loading';
@@ -11,12 +10,12 @@ import SettingContext from '../context/settingContext';
 const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [userSetting, setUserSetting] = useState<UserSetting | undefined>();
-  const [loginUser, setLoginUser] = useState<User | null>(
-    firebaseAuth.currentUser
+  const [loginUser, setLoginUser] = useState<firebase.User | null>(
+    firebase.auth().currentUser
   );
 
   useEffect(() => {
-    firebaseAuth.onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user == null) return;
       subscUserSetting(user.uid, setUserSetting);
     });
@@ -24,7 +23,7 @@ const App = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    firebaseAuth.onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         setLoginUser(user);
       } else {
